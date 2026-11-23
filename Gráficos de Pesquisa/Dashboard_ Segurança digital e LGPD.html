@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Segurança digital e LGPD: resultados da pesquisa</title>
+<style>
+:root{--bg:#f3f6f8;--card:#fff;--ink:#14232e;--mute:#5b6b77;--line:#d8e0e6;--acc:#0f6b7a;--acc2:#e0a72e;
+--l1:#d9eef1;--l2:#a6d3da;--l3:#6db3bf;--l4:#2f8ea0;--l5:#0b5563;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1a22;--card:#16262f;--ink:#e6eef2;--mute:#97a8b3;--line:#27404d;--acc:#4fc0d1;--acc2:#f0bd4f;
+--l1:#1f4a55;--l2:#2a6a79;--l3:#3b8b9c;--l4:#62b4c4;--l5:#a8e3ee;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0e1a22;--card:#16262f;--ink:#e6eef2;--mute:#97a8b3;--line:#27404d;--acc:#4fc0d1;--acc2:#f0bd4f;--l1:#1f4a55;--l2:#2a6a79;--l3:#3b8b9c;--l4:#62b4c4;--l5:#a8e3ee;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:1040px;margin:0 auto;padding:20px 16px 40px}
+h1{font-size:1.6rem;line-height:1.2;margin:0 0 4px;letter-spacing:-.01em}
+h2{font-size:1.05rem;margin:0 0 12px}
+.sub{color:var(--mute);margin:0 0 16px;max-width:70ch}
+.filters{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:16px}
+label{display:flex;flex-direction:column;font-size:.8rem;color:var(--mute);gap:4px}
+select{font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 10px;min-width:200px}
+select:focus-visible,button:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+button{font:inherit;align-self:flex-end;background:none;color:var(--acc);border:1px solid var(--line);border-radius:8px;padding:8px 12px;cursor:pointer}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px}
+.kpi b{display:block;font-size:2rem;line-height:1.1;color:var(--acc)}
+.kpi span{color:var(--mute);font-size:.85rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.wide{grid-column:1/-1}
+.row{display:grid;grid-template-columns:minmax(110px,40%) 1fr 34px;gap:8px;align-items:center;margin:6px 0;font-size:.85rem}
+.track{background:var(--l1);border-radius:4px;height:14px;overflow:hidden}
+.fill{height:100%;background:var(--acc);border-radius:4px;transition:width .3s}
+.n{text-align:right;color:var(--mute);font-variant-numeric:tabular-nums}
+.lk{margin:10px 0}
+.lk .t{font-size:.85rem;margin-bottom:4px}
+.bar{display:flex;height:22px;border-radius:5px;overflow:hidden;background:var(--line)}
+.bar i{display:flex;align-items:center;justify-content:center;font:600 .72rem system-ui;font-style:normal;min-width:0}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:.78rem;color:var(--mute);margin-top:10px}
+.legend s{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:5px;vertical-align:-1px;text-decoration:none}
+.note{margin:12px 0 0;font-size:.85rem;color:var(--mute)}
+footer{margin-top:20px;color:var(--mute);font-size:.8rem}
+</style></head><body><main>
+<h1>Segurança digital e LGPD: o que a pesquisa mostrou</h1>
+<p class="sub">Respostas ao questionário aplicado a estudantes, docente e público externo da UNIG. Use os filtros para comparar grupos.</p>
+<div class="filters">
+<label>Vínculo com a UNIG<select id="fv"></select></label>
+<label>Faixa etária<select id="ff"></select></label>
+<button id="rs" type="button">Limpar filtros</button></div>
+<section class="kpis" id="kpis"></section>
+<section class="grid">
+<div class="card wide"><h2>Concordância com as afirmações</h2><div id="likert"></div><div class="legend" id="lg"></div></div>
+<div class="card"><h2>Uso de senhas diferentes</h2><div id="s"></div></div>
+<div class="card"><h2>Autenticação em dois fatores (2FA)</h2><div id="d"></div></div>
+<div class="card"><h2>Serviços em nuvem</h2><div id="n"></div></div>
+<div class="card"><h2>Área de maior interesse em TI</h2><div id="a"></div></div>
+<div class="card"><h2>ODS que as pessoas ligam à Computação</h2><div id="o"></div></div>
+<div class="card"><h2>Temas de interesse (múltipla escolha)</h2><div id="t"></div></div>
+<div class="card wide"><h2>Quem respondeu</h2><div class="grid"><div id="v"></div><div id="f"></div></div></div>
+</section>
+<footer>Fonte: Dados_tratados_pesquisa.csv (25 respondentes). Perguntas de múltipla escolha somam mais de 100%.</footer>
+</main>
+<script>
+const D=[{"f":"18–24 anos","v":"Não tenho vínculo (público externo)","a":"Inteligência Artificial","t":["Inteligência Artificial","Segurança digital"],"q":5,"s":"Raramente","d":"Sim, em todas ou quase todas","l":1,"p":3,"n":"Sim, ocasionalmente","c":4,"o":["ODS 9 – Indústria, Inovação e Infraestrutura"],"r":5},{"f":"25–34 anos","v":"Não tenho vínculo (público externo)","a":"Redes e Infraestrutura","t":["Desenvolvimento de sistemas/aplicativos","Redes de computadores"],"q":4,"s":"Frequentemente","d":"Sim, em todas ou quase todas","l":3,"p":1,"n":"Sim, frequentemente","c":2,"o":["ODS 9 – Indústria, Inovação e Infraestrutura"],"r":2},{"f":"18–24 anos","v":"Estudante de graduação","a":"Inteligência Artificial","t":["Inteligência Artificial"],"q":4,"s":"Raramente","d":"Sim, em todas ou quase todas","l":5,"p":4,"n":"Sim, frequentemente","c":4,"o":["ODS 9 – Indústria, Inovação e Infraestrutura"],"r":5},{"f":"25–34 anos","v":"Não tenho vínculo (público externo)","a":"Inteligência Artificial","t":["Inteligência Artificial","Segurança digital","Ciência de Dados","Desenvolvimento de sistemas/aplicativos","Redes de computadores"],"q":5,"s":"Frequentemente","d":"Sim, em todas ou quase todas","l":4,"p":2,"n":"Sim, ocasionalmente","c":4,"o":["ODS 4 – Educação de Qualidade","ODS 9 – Indústria, Inovação e Infraestrutura"],"r":3},{"f":"18–24 anos","v":"Estudante de graduação","a":"Inteligência Artificial","t":["Inteligência Artificial","Ciência de Dados","Desenvolvimento de sistemas/aplicativos"],"q":4,"s":"Às vezes","d":"Sim, em todas ou quase todas","l":3,"p":2,"n":"Sim, ocasionalmente","c":5,"o":["ODS 4 – Educação de Qualidade","ODS 9 – Indústria, Inovação e Infraestrutura","ODS 16 – Paz, Justiça e Instituições Eficazes"],"r":4},{"f":"25–34 anos","v":"Não tenho vínculo (público externo)","a":"Inteligência Artificial","t":["Inteligência Artificial","Segurança digital","Ciência de Dados","Desenvolvimento de sistemas/aplicativos","Experiência do usuário (UX/HCI)"],"q":5,"s":"Às vezes","d":"Sim, em todas ou quase todas","l":5,"p":2,"n":"Sim, frequentemente","c":5,"o":["ODS 4 – Educação de Qualidade","ODS 9 – Indústria, Inovação e Infraestrutura","ODS 16 – Paz, Justiça e Instituições Eficazes"],"r":5},{"f":"25–34 anos","v":"Estudante de graduação","a":"Desenvolvimento de Software","t":["Ciência de Dados","Desenvolvimento de sistemas/aplicativos"],"q":4,"s":"Frequentemente","d":"Sim, em algumas","l":4,"p":4,"n":"Sim, frequentemente","c":5,"o":["ODS 9 – Indústria, Inovação e Infraestrutura"],"r":4},{"f":"25–34 anos","v":"Estudante de pós-graduação","a":"Redes e Infraestrutura","t":["Redes de computadores"],"q":4,"s":"Frequentemente","d":"Sim, em algumas","l":4,"p":4,"n":"Sim, ocasionalmente","c":4,"o":["ODS 4 – Educação de Qualidade"],"r":4},{"f":"25–34 anos","v":"Estudante de graduação","a":"Desenvolvimento de Software","t":["Desenvolvimento de sistemas/aplicativos"],"q":4,"s":"Frequentemente","d":"Sim, em algumas","l":4,"p":4,"n":"Sim, ocasionalmente","c":4,"o":["ODS 9 – Indústria, Inovação e Infraestrutura"],"r":4},{"f":"18–24 anos","v":"Estudante de graduação","a":"Segurança da Informação","t":["Inteligência Artificial","Segurança digital","Ciência de Dados","Desenvolvimento de sistemas/aplicativos"],"q":5,"s":"Às vezes","d":"Sim, em todas ou quase todas","l":5,"p":1,"n":"Sim, frequentemente","c":5,"o":["ODS 16 – Paz, Justiça e Instituições Eficazes"],"r":4},{"f":"18–24 anos","v":"Estudante de graduação","a":"Inteligência Artificial","t":["Inteligência Artificial","Segurança digital","Ciência de Dados","Desenvolvimento de sistemas/aplicativos","Redes de computadores"],"q":5,"s":"Frequentemente","d":"Sim, em todas ou quase todas","l":5,"p":5,"n":"Sim, frequentemente","c":5,"o":["ODS 9 – Indústria, Inovação e Infraestrutura"],"r":5},{"f":"18–24 anos","v":"Estudante de graduação","a":"Desenvolvimento de Software","t":["Inteligência Artificial","Segurança digital","Ciência de Dados","Desenvolvimento de sistemas/aplicativos","Redes de computadores","Experiência do usuário (UX/HCI)"],"q":5,"s":"Frequentemente","d":"Sim, em todas ou quase todas","l":5,"p":5,"n":"Sim, frequentemente","c":5,"o":["ODS 4 – Educação de Qualidade"],"r":5},{"f":"18–24 anos","v":"Não tenho vínculo (público externo)","a":"Nenhuma / não sei dizer","t":["Inteligência Artificial"],"q":3,"s":"Às vezes","d":"Sim, em todas ou quase todas","l":4,"p":3,"n":"Não utilizo","c":3,"o":["Nenhum, na minha opinião"],"r":3},{"f":"18–24 anos","v":"Estudante de graduação","a":"Inteligência Artificial","t":["Inteligência Artificial","Segurança digital","Ciência de Dados","Desenvolvimento de sistemas/aplicativos","Redes de computadores"],"q":5,"s":"Frequentemente","d":"Sim, em todas ou quase todas","l":5,"p":5,"n":"Sim, frequentemente","c":5,"o":["ODS 4 – Educação de Qualidade","ODS 9 – Indústria, Inovação e Infraestrutura"],"r":5},{"f":"35–44 anos","v":"Não tenho vínculo (público externo)","a":"Segurança da Informação","t":["Inteligência Artificial","Segurança digital"],"q":5,"s":"Sempre","d":"Sim, em todas ou quase todas","l":5,"p":2,"n":"Sim, frequentemente","c":5,"o":["ODS 9 – Indústria, Inovação e Infraestrutura"],"r":5},{"f":"45 anos ou mais","v":"Docente","a":"Inteligência Artificial","t":["Inteligência Artificial","Segurança digital"],"q":5,"s":"Às vezes","d":"Não utilizo","l":5,"p":1,"n":"Sim, ocasionalmente","c":1,"o":["ODS 9 – Indústria, Inovação e Infraestrutura"],"r":5},{"f":"25–34 anos","v":"Não tenho vínculo (público externo)","a":"Redes e Infraestrutura","t":["Inteligência Artificial","Redes de computadores"],"q":5,"s":"Às vezes","d":"Sim, em algumas","l":2,"p":3,"n":"Sim, ocasionalmente","c":4,"o":["ODS 4 – Educação de Qualidade"],"r":5},{"f":"18–24 anos","v":"Estudante de graduação","a":"Inteligência Artificial","t":["Inteligência Artificial","Desenvolvimento de sistemas/aplicativos"],"q":5,"s":"Sempre","d":"Sim, em todas ou quase todas","l":3,"p":3,"n":"Sim, frequentemente","c":5,"o":["ODS 9 – Indústria, Inovação e Infraestrutura"],"r":5},{"f":"25–34 anos","v":"Estudante de graduação","a":"Segurança da Informação","t":["Segurança digital","Desenvolvimento de sistemas/aplicativos"],"q":5,"s":"Frequentemente","d":"Sim, em algumas","l":3,"p":2,"n":"Sim, frequentemente","c":5,"o":["ODS 9 – Indústria, Inovação e Infraestrutura"],"r":5},{"f":"35–44 anos","v":"Não tenho vínculo (público externo)","a":"Desenvolvimento de Software","t":["Inteligência Artificial","Desenvolvimento de sistemas/aplicativos"],"q":5,"s":"Sempre","d":"Sim, em todas ou quase todas","l":5,"p":3,"n":"Sim, frequentemente","c":5,"o":["ODS 9 – Indústria, Inovação e Infraestrutura"],"r":5},{"f":"25–34 anos","v":"Estudante de graduação","a":"Inteligência Artificial","t":["Inteligência Artificial","Ciência de Dados"],"q":5,"s":"Frequentemente","d":"Sim, em algumas","l":2,"p":2,"n":"Sim, frequentemente","c":5,"o":["ODS 4 – Educação de Qualidade"],"r":5},{"f":"25–34 anos","v":"Estudante de graduação","a":"Inteligência Artificial","t":["Inteligência Artificial","Ciência de Dados"],"q":5,"s":"Sempre","d":"Sim, em todas ou quase todas","l":3,"p":2,"n":"Sim, frequentemente","c":5,"o":["ODS 9 – Indústria, Inovação e Infraestrutura"],"r":4},{"f":"25–34 anos","v":"Estudante de graduação","a":"Inteligência Artificial","t":["Inteligência Artificial","Ciência de Dados"],"q":5,"s":"Frequentemente","d":"Sim, em algumas","l":3,"p":2,"n":"Sim, frequentemente","c":5,"o":["ODS 9 – Indústria, Inovação e Infraestrutura"],"r":5},{"f":"18–24 anos","v":"Estudante de graduação","a":"Desenvolvimento de Software","t":["Inteligência Artificial","Desenvolvimento de sistemas/aplicativos"],"q":5,"s":"Frequentemente","d":"Sim, em todas ou quase todas","l":2,"p":2,"n":"Sim, ocasionalmente","c":5,"o":["ODS 9 – Indústria, Inovação e Infraestrutura"],"r":5},{"f":"25–34 anos","v":"Não tenho vínculo (público externo)","a":"Inteligência Artificial","t":["Inteligência Artificial","Segurança digital"],"q":5,"s":"Sempre","d":"Sim, em todas ou quase todas","l":5,"p":2,"n":"Sim, frequentemente","c":5,"o":["ODS 9 – Indústria, Inovação e Infraestrutura"],"r":5}];
+const LK=[['q','A Computação melhora a qualidade de vida'],['c','Tenho interesse em carreira de TI'],['r','A Computação ajuda a resolver problemas sociais'],['l','Conheço a LGPD'],['p','Meus dados pessoais estão seguros']];
+const CL=['var(--l1)','var(--l2)','var(--l3)','var(--l4)','var(--l5)'],TC=['var(--ink)','var(--ink)','var(--ink)','#fff','var(--bg)'];
+const SC=['Discordo totalmente','Discordo','Neutro','Concordo','Concordo totalmente'];
+const $=id=>document.getElementById(id);
+const opts=k=>[...new Set(D.map(r=>r[k]))].sort();
+function fill(sel,k,all){sel.innerHTML='<option value="">'+all+'</option>'+opts(k).map(o=>`<option>${o}</option>`).join('')}
+fill($('fv'),'v','Todos os vínculos');fill($('ff'),'f','Todas as faixas');
+const pct=(a,b)=>b?Math.round(100*a/b)+'%':'–';
+function count(rows,k){const c={};rows.forEach(r=>[].concat(r[k]).forEach(v=>c[v]=(c[v]||0)+1));return Object.entries(c).sort((a,b)=>b[1]-a[1])}
+function bars(id,rows,k){const e=count(rows,k);const mx=e.length?e[0][1]:1;
+$(id).innerHTML=e.length?e.map(([l,v])=>`<div class="row"><span>${l}</span><div class="track"><div class="fill" style="width:${100*v/mx}%"></div></div><span class="n">${v}</span></div>`).join(''):'<p class="note">Sem respostas neste filtro.</p>'}
+function render(){
+const rows=D.filter(r=>(!$('fv').value||r.v===$('fv').value)&&(!$('ff').value||r.f===$('ff').value));const n=rows.length;
+const ag=k=>rows.filter(r=>r[k]>=4).length;
+$('kpis').innerHTML=[[n,'respondentes no filtro'],[pct(rows.filter(r=>r.d!=='Não utilizo').length,n),'usam 2FA em ao menos alguns serviços'],[pct(ag('l'),n),'dizem conhecer a LGPD'],[pct(ag('p'),n),'sentem que seus dados estão seguros']].map(([b,s])=>`<div class="card kpi"><b>${b}</b><span>${s}</span></div>`).join('');
+$('likert').innerHTML=n?LK.map(([k,t])=>{const c=[1,2,3,4,5].map(i=>rows.filter(r=>r[k]===i).length);
+return `<div class="lk"><div class="t">${t} <span class="n">(${pct(c[3]+c[4],n)} concordam)</span></div><div class="bar" role="img" aria-label="${t}">${c.map((v,i)=>v?`<i style="width:${100*v/n}%;background:${CL[i]};color:${TC[i]}" title="${SC[i]}: ${v}">${v}</i>`:'').join('')}</div></div>`}).join(''):'<p class="note">Sem respostas neste filtro.</p>';
+$('lg').innerHTML=SC.map((s,i)=>`<span><s style="background:${CL[i]}"></s>${s}</span>`).join('');
+['s','d','n','a','o','t','v','f'].forEach(k=>bars(k,rows,k));
+}
+$('fv').onchange=$('ff').onchange=render;
+$('rs').onclick=()=>{$('fv').value='';$('ff').value='';render()};
+render();
+</script></body></html>
